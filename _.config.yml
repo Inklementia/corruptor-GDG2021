@@ -3,6 +3,7 @@ plugins:
 relative_links:
   enabled: true
   collections: true
+  show_downloads: false
 include:
   - README.md
   - PRIVATE_POLICY.md
