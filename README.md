@@ -1,4 +1,4 @@
-# Corruptionist
+# Corruptor
 Hyper-casual mobile game for Android devices developed for **2nd season of GameDev Goethe Incubator** event. 
 The game is available from 
 <a href="https://play.google.com/store/apps/details?id=com.padavans.corruptionist.gamehttps://play.google.com/store/apps/details?id=com.padavans.corruptionist.game" target="_blank">Google Play</a>.
