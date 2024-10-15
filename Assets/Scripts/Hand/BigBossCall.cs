@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using Hand;
 using Level;
 using Money;
@@ -142,8 +141,9 @@ public class BigBossCall : MonoBehaviour
         _elapsedWaitBeforeShowTime += Time.deltaTime;
         if (_canMoveHand && !_wasShown)
         {
-            handStruct.handGO.transform.DOMove(handStruct.target.position, handMovementTime)
-                .SetEase(Ease.OutCubic).OnComplete(() =>
+            LeanTween.move(handStruct.handGO, handStruct.target.position, handMovementTime)
+                .setEase(LeanTweenType.easeOutCubic)
+                .setOnComplete(() =>
                 {
                     _canPlayAnim = true;
                     _canGoBack = true;
@@ -162,13 +162,14 @@ public class BigBossCall : MonoBehaviour
         {
             _canPlayAnim = false;
             // go to initial position
-            handStruct.handGO.transform.DOMove(handStruct.initialPosition.position, handMovementTime).OnComplete(
-                () =>
+            LeanTween.move(handStruct.handGO, handStruct.initialPosition.position, handMovementTime)
+                .setOnComplete(() =>
                 {
                     _canMoveHand = false;
                     _canGoBack = false;
                     _wasShown = true;
                 });
+
         }
     }
 

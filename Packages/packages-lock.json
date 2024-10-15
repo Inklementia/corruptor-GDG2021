@@ -36,8 +36,8 @@
       "source": "registry",
       "dependencies": {
         "com.unity.2d.common": "2.1.0",
-        "com.unity.mathematics": "1.1.0",
         "com.unity.2d.sprite": "1.0.0",
+        "com.unity.mathematics": "1.1.0",
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.uielements": "1.0.0"
       },
@@ -54,7 +54,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.2d.path": {
-      "version": "2.1.0",
+      "version": "2.1.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -73,8 +73,8 @@
       "source": "registry",
       "dependencies": {
         "com.unity.2d.common": "2.1.0",
-        "com.unity.2d.animation": "3.2.9",
-        "com.unity.2d.sprite": "1.0.0"
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.2d.animation": "3.2.9"
       },
       "url": "https://packages.unity.com"
     },
@@ -85,13 +85,13 @@
       "dependencies": {}
     },
     "com.unity.2d.spriteshape": {
-      "version": "3.0.16",
+      "version": "3.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.mathematics": "1.1.0",
+        "com.unity.2d.path": "2.1.1",
         "com.unity.2d.common": "2.1.0",
-        "com.unity.2d.path": "2.1.0"
+        "com.unity.mathematics": "1.1.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -102,7 +102,7 @@
       "dependencies": {}
     },
     "com.unity.ads": {
-      "version": "3.7.1",
+      "version": "3.7.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -162,8 +162,8 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "7.6.0",
-        "com.unity.shadergraph": "7.6.0"
+        "com.unity.shadergraph": "7.6.0",
+        "com.unity.render-pipelines.core": "7.6.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -188,7 +188,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "2.1.4",
+      "version": "2.1.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -201,9 +201,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"

@@ -1,8 +1,6 @@
-﻿using DG.Tweening;
-using EZCameraShake;
+﻿using EZCameraShake;
 using Hand;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EndlessHandGenerator : MonoBehaviour
@@ -173,8 +171,10 @@ public class EndlessHandGenerator : MonoBehaviour
             _audioManager.Play("handSwoosh");
             _index = Random.Range(0, hands.Length);
             // go to target
-            hands[_index].handGO.transform.DOMove(hands[_index].target.position, _handMovementTime)
-                .SetEase(Ease.OutCubic).OnComplete(() => { _canGoBack = true; });
+            LeanTween.move(hands[_index].handGO, hands[_index].target.position, _handMovementTime)
+                .setEase(LeanTweenType.easeOutCubic)
+                .setOnComplete(() => { _canGoBack = true; });
+
         }
     }
 
@@ -187,15 +187,14 @@ public class EndlessHandGenerator : MonoBehaviour
 
             if (_elapsedWaitTime >= _handStayDuration)
             {
-                // go to initial position
-                hands[_index].handGO.transform.DOMove(hands[_index].initialPosition.position, _handMovementTime)
-                    .OnComplete(
-                        () =>
-                        {
-                            hands[_index].cashGO.SetActive(true);
-                            hands[_index].cashGO.GetComponent<EndlessCash>().CashCanBeTaken();
-                            _canMoveHands = true;
-                        });
+                LeanTween.move(hands[_index].handGO, hands[_index].initialPosition.position, _handMovementTime)
+                    .setOnComplete(() =>
+                    {
+                        hands[_index].cashGO.SetActive(true);
+                        hands[_index].cashGO.GetComponent<EndlessCash>().CashCanBeTaken();
+                        _canMoveHands = true;
+                    });
+
                 _elapsedMoveTime = 0.0f;
                 _elapsedWaitTime = 0.0f;
                 _canGoBack = false;

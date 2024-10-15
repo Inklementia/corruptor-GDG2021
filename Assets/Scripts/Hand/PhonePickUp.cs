@@ -10,7 +10,7 @@ public class PhonePickUp : MonoBehaviour
 {
     private HandGenerator _handGenerator;
     private AudioManager _audioManager;
-    [SerializeField] private CircleCollider2D collider2D;
+    [SerializeField] private CircleCollider2D circleCollider2D;
     [SerializeField] private GameObject clickParticle;
     private bool _isPickedUp;
 
@@ -28,7 +28,7 @@ public class PhonePickUp : MonoBehaviour
         Instantiate(clickParticle, transform.position, Quaternion.identity);
         _isPickedUp = true;
         _handGenerator.BlockHandGenerator();
-        collider2D.enabled = false;
+        circleCollider2D.enabled = false;
 
         _audioManager.Play("phonePickUp");
         _audioManager.Play("secretaryTalk");
@@ -46,7 +46,7 @@ public class PhonePickUp : MonoBehaviour
     {
         _isPickedUp = false;
         _handGenerator.UnblockHandGenerator();
-        collider2D.enabled = true;
+        circleCollider2D.enabled = true;
         _audioManager.Stop("secretaryTalk");
     }
     //TODO If not taken -200$

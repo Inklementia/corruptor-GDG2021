@@ -10,7 +10,7 @@ public class TutorialPhonePickUp : MonoBehaviour
 {
 
     private AudioManager _audioManager;
-    [SerializeField] private CircleCollider2D collider2D;
+    [SerializeField] private CircleCollider2D circleCollider;
     [SerializeField] private InteractiveTutorial interactiveTutorial;
 
     private void Awake()
@@ -26,7 +26,7 @@ public class TutorialPhonePickUp : MonoBehaviour
     {
         _isPickedUp = true;
        
-        collider2D.enabled = false;
+        circleCollider.enabled = false;
 
         _audioManager.Play("phonePickUp");
         _audioManager.Play("secretaryTalk");
@@ -48,7 +48,7 @@ public class TutorialPhonePickUp : MonoBehaviour
     {
         _isPickedUp = false;
        
-        collider2D.enabled = false;
+        circleCollider.enabled = false;
         _audioManager.Stop("secretaryTalk");
     }
 

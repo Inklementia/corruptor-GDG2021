@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using Hand;
+﻿using System.Collections;
 using I2.Loc;
 using TMPro;
 using UI;
@@ -164,8 +160,9 @@ public class InteractiveTutorial : MonoBehaviour
     {
         _audioManager.Play("handSwoosh");
         // go to target
-        hands[index].handGO.transform.DOMove(hands[index].target.position, handMovementTime)
-            .SetEase(Ease.OutCubic);
+        LeanTween.move(hands[index].handGO, hands[index].target.position, handMovementTime)
+            .setEase(LeanTweenType.easeOutCubic);
+
     }
 
     public void MoveHandBack(int index)
@@ -174,15 +171,14 @@ public class InteractiveTutorial : MonoBehaviour
         waves.SetActive(false);
         noClickArrow.GetComponent<Animator>().SetTrigger("hide");
         // go to initial position
-        hands[index].handGO.transform
-            .DOMove(hands[index].initialPosition.position, handMovementTime)
-            .OnComplete(
-                () =>
-                {
-                    // takes the last element from array
-                    hands[index].cashGO.SetActive(true);
-                    hands[index].cashGO.GetComponent<Money.Cash>().CashCanBeTaken();
-                });
+        LeanTween.move(hands[index].handGO, hands[index].initialPosition.position, handMovementTime)
+            .setOnComplete(() =>
+            {
+                // takes the last element from array
+                hands[index].cashGO.SetActive(true);
+                hands[index].cashGO.GetComponent<Money.Cash>().CashCanBeTaken();
+            });
+
 
         StartCoroutine(WaitAndShowClick());
 
