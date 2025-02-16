@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class ContinueGameAds : MonoBehaviour, IUnityAdsListener
+public class ContinueGameAds : MonoBehaviour
 {
 #if UNITY_IOS
     private const string GameId = "4198042";
@@ -13,70 +11,121 @@ public class ContinueGameAds : MonoBehaviour, IUnityAdsListener
 #endif
 
     private const string PlacementId = "ContinueGame";
-
     private Action _onRewardedAdSuccess;
+    private bool _isAdLoaded = false;
 
     [SerializeField] private Canvas pauseButtonCanvas;
+
     private void Start()
     {
-        Advertisement.AddListener(this);
-        Advertisement.Initialize(GameId);
+        Advertisement.Initialize(GameId, false, new InitializationCallback(this));
     }
 
     public void PlayContinueGameAd(Action onSuccess)
     {
         _onRewardedAdSuccess = onSuccess;
-        if (Advertisement.IsReady(PlacementId))
+
+        if (_isAdLoaded)
         {
-            Advertisement.Show(PlacementId);
+            Advertisement.Show(PlacementId, new AdShowCallback(this));
         }
         else
         {
-            // if the ad is not yet loaded out
-            // is not ready
             Debug.Log("ADS ARE NOT READY");
         }
     }
 
-    public void OnUnityAdsReady(string placementId)
+    private class InitializationCallback : IUnityAdsInitializationListener
     {
-        if (placementId == PlacementId)
+        private readonly ContinueGameAds _adsManager;
+
+        public InitializationCallback(ContinueGameAds adsManager)
         {
-            Debug.Log("ADS ARE READY");
+            _adsManager = adsManager;
+        }
+
+        public void OnInitializationComplete()
+        {
+            Debug.Log("Unity Ads Initialized.");
+            Advertisement.Load(PlacementId, new AdLoadCallback(_adsManager));
+        }
+
+        public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+        {
+            Debug.LogError($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
         }
     }
 
-    public void OnUnityAdsDidError(string message)
+    private class AdLoadCallback : IUnityAdsLoadListener
     {
-        Debug.Log("ERROR: " + message);
-    }
+        private readonly ContinueGameAds _adsManager;
 
-    public void OnUnityAdsDidStart(string placementId)
-    {
-        // need to mute all the sound
-        Debug.Log("VIDEO STARTED");
-    }
+        public AdLoadCallback(ContinueGameAds adsManager)
+        {
+            _adsManager = adsManager;
+        }
 
-    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
-    {
-        if (placementId == PlacementId && showResult == ShowResult.Finished)
+        public void OnUnityAdsAdLoaded(string placementId)
         {
-            Debug.Log("VIDEO FINISHED");
-            _onRewardedAdSuccess?.Invoke();
-            pauseButtonCanvas.enabled = true;
+            if (placementId == PlacementId)
+            {
+                Debug.Log($"Ad {placementId} loaded successfully.");
+                _adsManager._isAdLoaded = true;
+            }
         }
-        else if (showResult == ShowResult.Skipped)
+
+        public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
         {
-            // do not reward the user for skipping the ad
-        }
-        else if (showResult == ShowResult.Failed)
-        {
-            Debug.Log("Failed");
+            Debug.LogError($"Ad Load Failed: {placementId}, Error: {error}, Message: {message}");
         }
     }
 
-    private void OnDestroy()
+    private class AdShowCallback : IUnityAdsShowListener
     {
-        Advertisement.RemoveListener(this);
+        private readonly ContinueGameAds _adsManager;
+
+        public AdShowCallback(ContinueGameAds adsManager)
+        {
+            _adsManager = adsManager;
+        }
+
+        public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showResult)
+        {
+            if (placementId == PlacementId)
+            {
+                if (showResult == UnityAdsShowCompletionState.COMPLETED)
+                {
+                    Debug.Log("VIDEO FINISHED");
+                    _adsManager._onRewardedAdSuccess?.Invoke();
+                    _adsManager.pauseButtonCanvas.enabled = true;
+                }
+                else if (showResult == UnityAdsShowCompletionState.SKIPPED)
+                {
+                    Debug.Log("Ad skipped - no reward");
+                }
+                else if (showResult == UnityAdsShowCompletionState.UNKNOWN)
+                {
+                    Debug.LogError("Ad failed to show.");
+                }
+
+                // Reload the ad for future use
+                Advertisement.Load(PlacementId, new AdLoadCallback(_adsManager));
+            }
+        }
+
+        public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+        {
+            Debug.LogError($"Ad Show Failed: {placementId}, Error: {error}, Message: {message}");
+        }
+
+        public void OnUnityAdsShowStart(string placementId)
+        {
+            Debug.Log("Ad started.");
+        }
+
+        public void OnUnityAdsShowClick(string placementId)
+        {
+            Debug.Log("Ad clicked.");
+        }
     }
 }
